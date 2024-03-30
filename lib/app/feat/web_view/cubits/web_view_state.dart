@@ -1,12 +1,15 @@
-import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewState {
-  final WebViewController? webViewController;
 
-  WebViewState({required this.webViewController});
+abstract class WebViewState {}
+class WebViewStateInitialState
+    extends WebViewState {}
 
-  WebViewState copyWith({WebViewController? webViewController}) {
-    return WebViewState(
-        webViewController: webViewController ?? this.webViewController);
-  }
-}
+class WebViewLoadingState
+    extends WebViewState {}
+
+class WebViewSuccessState
+    extends WebViewState {}
+
+class WebViewFailureState
+    extends WebViewState {}
+

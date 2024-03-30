@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 
 import 'package:magic_project/app/feat/web_view/cubits/web_view_cubit.dart';
+import 'package:magic_project/app/feat/web_view/cubits/web_view_state.dart';
 
 import '../web_view/presentation/screens/web_view_screen.dart';
 
@@ -29,14 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocBuilder<WebViewCubit, String>(
+              builder: (context) => BlocBuilder<WebViewCubit, WebViewState>(
                 builder: (context, state) {
                   var cubit = context.watch<WebViewCubit>();
-
-                  return WebViewScreen(
-                    controller: cubit.controller,
-                    appBarTitle: 'Mi Imei Checker',
-                  );
+                  if (state is WebViewSuccessState) {
+                    return WebViewScreen(
+                      controller: cubit.controller,
+                      appBarTitle: 'Mi Imei Checker',
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    ); // Placeholder while loading
+                  }
                 },
               ),
             ),

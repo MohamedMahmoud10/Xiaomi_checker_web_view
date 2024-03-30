@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magic_project/app/feat/web_view/cubits/web_view_state.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewCubit extends Cubit<String> {
+class WebViewCubit extends Cubit<WebViewState> {
   late WebViewController controller;
   bool isLoaded = false;
 
-  WebViewCubit() : super('') {
+  WebViewCubit() : super(WebViewStateInitialState()) {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -18,9 +19,19 @@ class WebViewCubit extends Cubit<String> {
           onPageStarted: (String url) {},
           onPageFinished: (String url) {
             debugPrint('Page finished loading: $url');
+            // Rest of your code...
+
+            debugPrint('Page finished loading: $url');
             controller.runJavaScript('''
-                (function () {const elementsToRemove = [document.getElementsByTagName("header")[0].parentElement,document.getElementById("globalIcons"),document.getElementById("footer").parentElement.parentElement,];elementsToRemove.forEach(element => {element.parentNode.removeChild(element);});})();
+              const elementsToRemove = document.querySelectorAll('.status-check-bottom, #cloudflare-app-google-translate');
+if (elementsToRemove.length > 0) {
+    elementsToRemove.forEach(element => {
+        element.remove();
+    });
+}
                 ''');
+            isLoaded = true; // Set loading flag to true when finished
+            emit(WebViewSuccessState());
           },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
@@ -36,6 +47,5 @@ class WebViewCubit extends Cubit<String> {
 
   void loadUrl(String url) {
     controller.loadRequest(Uri.parse(url));
-    emit(url);
   }
 }
