@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 
@@ -66,11 +67,17 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/svg/magic.svg',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+          Center(
+            child: SvgPicture.asset(
+              'assets/svg/magic.svg',
+              fit: BoxFit.cover,
+              width: 200.w,
+              height: 400.h,
+              colorFilter: const ColorFilter.mode(
+                Colors.orange,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
           AnimatedOpacity(
             opacity: _isVisible ? 1.0 : 0,
